@@ -10,10 +10,7 @@ export class EventsService {
     @InjectModel(Event.name) private readonly eventModel: Model<EventDocument>,
   ) {}
 
-  async getAll(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 9,
-  ): Promise<Event[]> {
+  async getAll(page, limit): Promise<Event[]> {
     const offset = (page - 1) * limit;
 
     const events = await this.eventModel
