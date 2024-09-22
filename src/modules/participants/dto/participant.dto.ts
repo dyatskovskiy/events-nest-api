@@ -1,15 +1,33 @@
-import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsEmail,
+  IsEnum,
+  IsDateString,
+} from 'class-validator';
+
+export enum DiscoveryMethod {
+  Social = 'social',
+  Friends = 'friends',
+  Myself = 'myself',
+}
 
 export class ParticipantDto {
   @IsString({ message: 'Please enter the full name' })
   @IsNotEmpty()
   fullName: string;
 
-  @IsEmail({})
+  @IsEmail()
   @IsNotEmpty()
   email: string;
 
-  @IsString()
+  @IsDateString()
   @IsNotEmpty()
-  discoveryMethod: string;
+  dateOfBirth: string;
+
+  @IsEnum(DiscoveryMethod, {
+    message: 'Please choose a valid discovery method',
+  })
+  @IsNotEmpty()
+  discoveryMethod: DiscoveryMethod;
 }

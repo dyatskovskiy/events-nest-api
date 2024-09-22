@@ -14,7 +14,9 @@ export class ParticipantsService {
     private readonly eventsService: EventsService,
   ) {}
 
-  async addParticipant(addParticipantDto: AddParticipantDto) {
+  async addParticipant(
+    addParticipantDto: AddParticipantDto,
+  ): Promise<Participant> {
     const { participant, eventId } = addParticipantDto;
 
     const isParticipantExistsInEvent =
@@ -29,6 +31,7 @@ export class ParticipantsService {
       );
 
     const createdParticipant = await this.participantModel.create({
+      dateOfBirth: new Date(participant.dateOfBirth),
       ...participant,
     });
 
