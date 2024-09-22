@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Query } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { Event, EventDocument } from './schemas/event.schema';
@@ -20,6 +20,10 @@ export class EventsService {
       .exec();
 
     return events;
+  }
+
+  async getTotalCount(): Promise<number> {
+    return this.eventModel.countDocuments().exec();
   }
 
   async getOneById(id: mongoose.Schema.Types.ObjectId): Promise<EventDocument> {

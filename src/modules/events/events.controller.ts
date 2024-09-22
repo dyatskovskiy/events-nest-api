@@ -1,7 +1,7 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
-import { Event } from './schemas/event.schema';
+import { Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { Participant } from '../participants/schemas/participant.schema';
+import { Response } from 'express';
 
 @Controller('events')
 export class EventsController {
@@ -11,10 +11,18 @@ export class EventsController {
   async getAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 9,
-  ): Promise<Event[]> {
+    @Res() response: Response,
+  ) {
+    const total = await this.eventsService.getTotalCount();
+
     const events = await this.eventsService.getAll(page, limit);
 
-    return events;
+    response.json({
+      total,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+      events,
+    });
   }
 
   @Get('/:id/participants')
