@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Query } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { Event, EventDocument } from './schemas/event.schema';
@@ -10,8 +10,17 @@ export class EventsService {
     @InjectModel(Event.name) private readonly eventModel: Model<EventDocument>,
   ) {}
 
-  async getAll(): Promise<Event[]> {
-    const events = await this.eventModel.find().exec();
+  async getAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 9,
+  ): Promise<Event[]> {
+    const offset = (page - 1) * limit;
+
+    const events = await this.eventModel
+      .find()
+      .skip(offset)
+      .limit(limit)
+      .exec();
 
     return events;
   }
