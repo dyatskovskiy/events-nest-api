@@ -11,8 +11,6 @@ export class ParticipantsController {
   async addParticipant(
     @Body() addParticipantDto: AddParticipantDto,
   ): Promise<Participant> {
-    console.log(addParticipantDto);
-
     const participant =
       await this.participantsService.addParticipant(addParticipantDto);
 

@@ -4,6 +4,7 @@ import {
   IsEmail,
   IsEnum,
   IsDateString,
+  MinLength,
 } from 'class-validator';
 
 export enum DiscoveryMethod {
@@ -14,6 +15,7 @@ export enum DiscoveryMethod {
 
 export class ParticipantDto {
   @IsString({ message: 'Please enter the full name' })
+  @MinLength(3, { message: 'Name must be at least 3 characters' })
   @IsNotEmpty()
   fullName: string;
 
